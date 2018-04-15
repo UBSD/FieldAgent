@@ -3,7 +3,7 @@
 #
 # ==============================================
 # ·
-# · Author: Albert mjwang
+# · Author: A wang
 # ·
 # · Albert.mj.wang@gmail.com
 # ·
@@ -15,9 +15,9 @@
 
 # - paraments ... ---------------------------------------------------------------
 RunTimes=10000
-PlayerNumber=100
+AgentNumber=100
 MsgNameLen=15
-PlayerTimeUnit=1
+AgentTimeUnit=1
 FieldTimeUnit=1
 msgname0="---------------"
 msgname1="..............."
@@ -25,26 +25,26 @@ msgname2="..............."
 msgname3="..............."
 msgname4="..............."
 msgname5="..............."
-PlayerList={}
+AgentList={}
 #...
 
 
 # - classes ... -----------------------------------------------------------------
 class Basis():
     def __init__(self, name="Basis_Process"):
-        self._MSGs = dict()
+        self._Name, self._Messages = name, dict()
 
     def put_MSG(self, name, value=None):
-        self._MSGs[name] = value
+        self._Messages[name] = value
 
-    def len_MSG(self): #length of items
-        return len(self._MSGs)
+    def len_MSG(self):
+        return len(self._Messages)
 
-    def get_MSG(self): # FIFO
-        return self._MSGs.popitem(0)
+    def get_MSG(self): #FIFO
+        return self._Messages.popitem(0)
 
     def clr_MSG():
-        self._MSGs.clear()
+        self._Messages.clear()
 
 
 class Field(Basis):
@@ -63,23 +63,23 @@ class Field(Basis):
                     #...
                 else: print "!!Wrong Msg:", self.name, self.InMessage
 
-            for self.i in random_range(PlayerNumber):
+            for self.i in random_range(AgentNumber):
                 self.OutMessage=[...]
-                PlayerList[self.i].put_MSG(msgname3+"%015d"%randint(1,999999999999999),self.OutMessage)
+                AgentList[self.i].put_MSG(msgname3+"%015d"%randint(1,999999999999999),self.OutMessage)
                 self.OutMessage=[...]
-                PlayerList[self.i].put_MSG(msgname4+"%015d"%randint(1,999999999999999),self.OutMessage)
+                AgentList[self.i].put_MSG(msgname4+"%015d"%randint(1,999999999999999),self.OutMessage)
                 self.OutMessage=[...]
-                PlayerList[self.i].put_MSG(msgname5+"%015d"%randint(1,999999999999999),self.OutMessage)
+                AgentList[self.i].put_MSG(msgname5+"%015d"%randint(1,999999999999999),self.OutMessage)
 
 
-class Player(Basis):
-    def __init__(self, name="Player", myid=0):
+class Agent(Basis):
+    def __init__(self, name="Agent", myid=0):
         Basis.__init__(self, name)
         self.InMessage = []
         self.OutMessage = []
 
     def run(self):
-        while True: # the main loop of each worker(Player)...
+        while True: # the main loop of each worker(Agent)...
             # the Delta function (state transition):
             # clear the accumulators here.
 
